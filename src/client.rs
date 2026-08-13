@@ -22,23 +22,46 @@ const DEFAULT_BASE_URL: &str = "https://shikimori.io";
 const DEFAULT_RPS: u32 = 5;
 const DEFAULT_RPM: u32 = 90;
 
-/// Immutable configuration used to construct a [`ShikimoriClient`].
+/// Неизменяемая конфигурация, из которой создаётся [`ShikimoriClient`].
+///
+/// Получайте значение через [`ClientConfig::builder`]. Конфигурация не выдаёт и
+/// не обновляет OAuth token: [`Self::access_token`] — уже существующий bearer
+/// token, который будет отправлен только для защищённых REST-запросов.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ClientConfig {
-    /// API origin, without a trailing slash. Defaults to `https://shikimori.io`.
+    /// API origin без завершающего `/`.
+    ///
+    /// По умолчанию — `https://shikimori.io`. Полезен для локального contract
+    /// testing; [`ClientConfigBuilder::build`] принимает только `http://` или
+    /// `https://` origin.
     pub base_url: String,
-    /// Required meaningful application identifier sent as `User-Agent`.
+    /// Обязательный осмысленный идентификатор приложения в `User-Agent`.
+    ///
+    /// Пустое либо некорректное HTTP-header значение отклоняется builder-ом.
     pub user_agent: String,
-    /// Optional access token for protected REST routes. OAuth issuance/refresh is out of scope.
+    /// Необязательный bearer token для защищённых REST-маршрутов.
+    ///
+    /// OAuth issuance, refresh и revoke намеренно находятся за границами crate.
     pub access_token: Option<String>,
-    /// Maximum requests per second. Defaults to Shikimori's documented 5 rps.
+    /// Верхняя граница запросов в секунду; по умолчанию 5 rps.
+    ///
+    /// Этот limiter применяется вместе с минутным limiter ко всем clone-ам
+    /// созданного клиента.
     pub requests_per_second: NonZeroU32,
-    /// Maximum requests per minute. Defaults to Shikimori's documented 90 rpm.
+    /// Верхняя граница запросов в минуту; по умолчанию 90 rpm.
+    ///
+    /// Этот limiter применяется вместе с секундным limiter ко всем clone-ам
+    /// созданного клиента.
     pub requests_per_minute: NonZeroU32,
 }
 
 impl ClientConfig {
-    /// Starts a builder with a required application-specific user agent.
+    /// Начинает конфигурацию с обязательным application-specific User-Agent.
+    ///
+    /// # Ошибки
+    ///
+    /// Значение проверяется только в [`ClientConfigBuilder::build`], который
+    /// вернёт [`Error::Configuration`] для пустого или невалидного header value.
     pub fn builder(user_agent: impl Into<String>) -> ClientConfigBuilder {
         ClientConfigBuilder {
             base_url: DEFAULT_BASE_URL.to_owned(),
@@ -50,7 +73,10 @@ impl ClientConfig {
     }
 }
 
-/// Fluent builder for [`ClientConfig`].
+/// Fluent builder для [`ClientConfig`].
+///
+/// Все методы задают только configuration data. Ни один из них не выполняет
+/// сетевой запрос; полная валидация происходит в [`Self::build`].
 #[derive(Debug, Clone)]
 pub struct ClientConfigBuilder {
     base_url: String,
@@ -61,37 +87,54 @@ pub struct ClientConfigBuilder {
 }
 
 impl ClientConfigBuilder {
-    /// Overrides the API origin, useful for deterministic local tests.
+    /// Переопределяет API origin.
+    ///
+    /// Предназначен для локального mock/contract testing; обычному потребителю
+    /// следует оставить официальный origin по умолчанию.
     pub fn base_url(mut self, value: impl Into<String>) -> Self {
         self.base_url = value.into();
         self
     }
 
-    /// Sets an already-issued bearer access token. The token is never included in errors.
+    /// Задаёт уже выданный bearer access token.
+    ///
+    /// Token добавляется в исходящие запросы как `Authorization: Bearer …` и
+    /// никогда не включается в message/debug representation ошибок.
     pub fn access_token(mut self, value: impl Into<String>) -> Self {
         self.access_token = Some(value.into());
         self
     }
 
-    /// Omits bearer authentication from all outgoing requests.
+    /// Удаляет bearer authentication из всех последующих исходящих запросов.
     pub fn without_access_token(mut self) -> Self {
         self.access_token = None;
         self
     }
 
-    /// Changes the requests-per-second quota. Both quotas remain active.
+    /// Изменяет секундную квоту governor.
+    ///
+    /// Минутная квота продолжает применяться независимо от этого значения.
     pub fn requests_per_second(mut self, value: NonZeroU32) -> Self {
         self.requests_per_second = value;
         self
     }
 
-    /// Changes the requests-per-minute quota. Both quotas remain active.
+    /// Изменяет минутную квоту governor.
+    ///
+    /// Секундная квота продолжает применяться независимо от этого значения.
     pub fn requests_per_minute(mut self, value: NonZeroU32) -> Self {
         self.requests_per_minute = value;
         self
     }
 
-    /// Validates configuration and returns it.
+    /// Валидирует и возвращает конфигурацию.
+    ///
+    /// Удаляет завершающий `/` у origin, проверяет scheme, User-Agent и token.
+    ///
+    /// # Ошибки
+    ///
+    /// Возвращает [`Error::Configuration`] при пустом/некорректном User-Agent,
+    /// пустом token или origin без `http://`/`https://`.
     pub fn build(self) -> Result<ClientConfig> {
         let base_url = self.base_url.trim_end_matches('/').to_owned();
         if !(base_url.starts_with("https://") || base_url.starts_with("http://")) {
@@ -124,10 +167,12 @@ impl ClientConfigBuilder {
 
 type HttpsClient = Client<HttpsConnector<HttpConnector>, Body>;
 
-/// Asynchronous Shikimori REST client.
+/// Асинхронный HTTP-клиент Shikimori REST API.
 ///
-/// The type is cheap to clone; clones share the same transport and both global
-/// governor rate limiters.
+/// Клиент использует Hyper поверх Rustls/WebPKI roots, Tokio и `simd_json`.
+/// Тип дёшево clone-ится: clones совместно используют transport и оба глобальных
+/// governor limiter, поэтому concurrency не обходит 5 rps/90 rpm policy.
+/// Изменяющие запросы не повторяются автоматически.
 #[derive(Clone)]
 pub struct ShikimoriClient {
     http: HttpsClient,
@@ -149,7 +194,10 @@ impl std::fmt::Debug for ShikimoriClient {
 }
 
 impl ShikimoriClient {
-    /// Creates a client using HTTPS backed by Rustls/webpki roots.
+    /// Создаёт клиент с HTTPS через Rustls и WebPKI root certificates.
+    ///
+    /// Конфигурация предполагается прошедшей [`ClientConfigBuilder::build`].
+    /// Метод не делает сетевой запрос и не раскрывает token в [`Debug`].
     pub fn new(config: ClientConfig) -> Self {
         let connector = HttpsConnectorBuilder::new()
             .with_webpki_roots()
@@ -176,12 +224,14 @@ impl ShikimoriClient {
         }
     }
 
-    /// Returns the configured origin, mainly useful in diagnostics/tests.
+    /// Возвращает настроенный API origin.
+    ///
+    /// В основном полезно для diagnostics и local mock testing.
     pub fn base_url(&self) -> &str {
         &self.base_url
     }
 
-    /// Returns whether the client will send bearer authorization.
+    /// Сообщает, будет ли клиент отправлять bearer `Authorization` header.
     pub fn has_access_token(&self) -> bool {
         self.authorization.is_some()
     }

@@ -2,42 +2,51 @@
 
 use std::{error::Error as StdError, fmt};
 
-/// Convenience result type used by all public client methods.
+/// Стандартный результат всех публичных методов клиента.
+///
+/// Успешное значение содержит тип конкретного REST-ответа; ошибка — [`Error`].
 pub type Result<T> = std::result::Result<T, Error>;
 
-/// Structured error body returned by the Shikimori API when one is available.
+/// Структурированная не-2xx ошибка, возвращённая Shikimori API.
+///
+/// Доступна как [`Error::Api`]. Даже если server не вернул JSON-`errors`,
+/// [`Self::body`] остаётся доступным для диагностики.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ApiError {
-    /// HTTP status code.
+    /// HTTP status code неуспешного ответа.
     pub status: u16,
-    /// Optional error messages parsed from an `errors` array/string response.
+    /// Сообщения из server-side JSON поля `errors`; пустой вектор, если body имеет другой формат.
     pub messages: Vec<String>,
-    /// Server response body retained as UTF-8-lossy text for diagnostics.
+    /// Server response body как lossy UTF-8 text для безопасной диагностики.
     pub body: String,
-    /// Server-provided retry delay in seconds, parsed from `Retry-After` if present.
+    /// Числовая задержка в секундах из `Retry-After`, если header присутствует и парсится.
     pub retry_after_seconds: Option<u64>,
 }
 
-/// Error returned by the client.
+/// Ошибка, возвращаемая клиентом.
+///
+/// Transport/codec configuration errors не повторяются автоматически. Для
+/// HTTP non-success используйте [`Self::Api`] и inspect [`ApiError::status`],
+/// `messages` и `retry_after_seconds`.
 #[derive(Debug)]
 pub enum Error {
-    /// The client configuration or a request URI/header was invalid.
+    /// Некорректная client configuration: origin, token или User-Agent.
     Configuration(String),
-    /// A percent-encoded URI could not be parsed by Hyper.
+    /// Percent-encoded URI не удалось распарсить Hyper-ом.
     InvalidUri(String),
-    /// A request could not be created due to an invalid HTTP header/value.
+    /// Невозможно создать request из-за некорректного HTTP header/value.
     InvalidRequest(String),
-    /// HTTPS transport failure from Hyper/Rustls.
+    /// Ошибка HTTPS transport, полученная от Hyper/Rustls.
     Transport(hyper::Error),
-    /// Response body streaming failure from Hyper.
+    /// Ошибка streaming response body, полученная от Hyper.
     Body(hyper::Error),
-    /// JSON encoding or decoding failure from simd-json.
+    /// Ошибка JSON encode/decode, полученная от `simd_json`.
     Json(simd_json::Error),
-    /// The configured rate limiter was closed or rejected the request.
+    /// Внутренний limiter был закрыт либо отказал запросу.
     RateLimit(String),
-    /// An HTTP success response unexpectedly had a non-JSON body.
+    /// Успешный response имел пустое или не-JSON body там, где ожидается JSON model.
     UnexpectedBody(String),
-    /// Non-success HTTP response from Shikimori.
+    /// Неуспешный HTTP response Shikimori с сохранёнными diagnostic details.
     Api(ApiError),
 }
 

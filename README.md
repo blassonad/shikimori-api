@@ -4,6 +4,27 @@
 
 > Официальная документация помечает v1/v2 как устаревшие и рекомендует GraphQL при наличии подходящего запроса. Этот crate создан именно для проектов, которым нужно полное и типобезопасное взаимодействие с опубликованным REST API. [1] [2]
 
+## Cargo/Rustdoc-документация
+
+Основная документация разработчика находится непосредственно в публичном API crate: она содержит crate overview, модели, query/body DTO, enum wire-values и каждый REST-метод v1/v2. Откройте её локально следующей командой:
+
+```bash
+cargo doc --no-deps --all-features --open
+```
+
+Cargo также проверяет примеры документации без вызова реального API:
+
+```bash
+cargo test --doc --all-features
+```
+
+| Материал | Назначение |
+| --- | --- |
+| `cargo doc` | Каноническая навигационная Rustdoc-документация публичного API. |
+| [API reference](docs/api-reference.md) | Расширенные объяснения wire-contract, моделей, ошибок и особенностей спецификации. |
+| [Endpoint matrix](docs/endpoint-matrix.md) | Полная таблица HTTP method, URI, Rust method, input, output и scope. |
+| [Поддержка Rustdoc](docs/rustdoc-maintenance.md) | Правила документирования новых публичных API и команды проверки. |
+
 ## Возможности
 
 | Область | Реализация |

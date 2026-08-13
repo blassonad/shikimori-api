@@ -6,6 +6,7 @@ rust-version = "1.75"
 description = "Полный асинхронный Rust-клиент Shikimori REST API v1/v2 (без GraphQL и OAuth flow)"
 license = "MIT"
 repository = "https://github.com/blassonad/shikimori-api"
+documentation = "https://docs.rs/shikimori-api"
 keywords = ["shikimori", "anime", "manga", "api", "client"]
 categories = ["api-bindings", "asynchronous"]
 readme = "README.md"
@@ -20,6 +21,10 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync", "time"
 
 [dev-dependencies]
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
 
 [features]
 default = []

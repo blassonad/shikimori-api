@@ -67,6 +67,7 @@ impl QueryParameters for PageLimitQuery {
 /// Required query for achievements.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AchievementsQuery {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub user_id: u64,
 }
 impl QueryParameters for AchievementsQuery {
@@ -78,6 +79,7 @@ impl QueryParameters for AchievementsQuery {
 /// Censorship switch used by the calendar route.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct CensoredQuery {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub censored: Option<bool>,
 }
 impl QueryParameters for CensoredQuery {
@@ -89,6 +91,7 @@ impl QueryParameters for CensoredQuery {
 /// One optional numeric limit.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct LimitQuery {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub limit: Option<u64>,
 }
 impl QueryParameters for LimitQuery {
@@ -100,6 +103,7 @@ impl QueryParameters for LimitQuery {
 /// Lookup setting for `/api/users/:id`; nickname lookup is enabled only when true.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct IsNicknameQuery {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub is_nickname: bool,
 }
 impl QueryParameters for IsNicknameQuery {
@@ -113,7 +117,9 @@ impl QueryParameters for IsNicknameQuery {
 /// Generic text search with the optional person-kind filter.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct SearchQuery {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub search: Option<String>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub kind: Option<PersonKind>,
 }
 impl QueryParameters for SearchQuery {
@@ -127,13 +133,16 @@ impl QueryParameters for SearchQuery {
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize)]
 pub struct ReorderFavoriteRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub new_index: Option<u64>,
 }
 
 /// Resource type used by legacy cleanup/reset user-rate routes.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum UserRateListType {
+    /// Вариант, поддерживаемый публичным API.
     Anime,
+    /// Вариант, поддерживаемый публичным API.
     Manga,
 }
 impl ::std::fmt::Display for UserRateListType {
@@ -412,8 +421,11 @@ impl QueryParameters for ListTopicsQuery {
 /// User listing query.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct ListUsersQuery {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub page: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub limit: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub search: Option<String>,
 }
 impl QueryParameters for ListUsersQuery {
@@ -427,11 +439,17 @@ impl QueryParameters for ListUsersQuery {
 /// User rate list query for v2.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct ListUserRatesV2Query {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub user_id: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub target_id: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub target_type: Option<RateTargetType>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub status: Option<UserRateStatus>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub page: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub limit: Option<u64>,
 }
 impl QueryParameters for ListUserRatesV2Query {
@@ -448,9 +466,13 @@ impl QueryParameters for ListUserRatesV2Query {
 /// Query for a user's anime rate list.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct UserAnimeRatesQuery {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub page: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub limit: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub status: Option<UserRateStatus>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub censored: Option<bool>,
 }
 impl QueryParameters for UserAnimeRatesQuery {
@@ -465,8 +487,11 @@ impl QueryParameters for UserAnimeRatesQuery {
 /// Query for a user's manga rate list.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct UserMangaRatesQuery {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub page: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub limit: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub censored: Option<bool>,
 }
 impl QueryParameters for UserMangaRatesQuery {
@@ -480,8 +505,11 @@ impl QueryParameters for UserMangaRatesQuery {
 /// Query for current user's message folder.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UserMessagesQuery {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub message_type: MessageFolder,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub page: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub limit: Option<u64>,
 }
 impl QueryParameters for UserMessagesQuery {
@@ -495,9 +523,13 @@ impl QueryParameters for UserMessagesQuery {
 /// User history query.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct UserHistoryQuery {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub page: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub limit: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub target_id: Option<u64>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub target_type: Option<RateTargetType>,
 }
 impl QueryParameters for UserHistoryQuery {
@@ -512,7 +544,9 @@ impl QueryParameters for UserHistoryQuery {
 /// Typed list include/exclude value; `Exclude(x)` serializes as `!x`.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ListValue<T> {
+    /// Вариант, поддерживаемый публичным API.
     Include(T),
+    /// Вариант, поддерживаемый публичным API.
     Exclude(T),
 }
 impl<T: ToString> ::std::fmt::Display for ListValue<T> {
@@ -526,8 +560,14 @@ impl<T: ToString> ::std::fmt::Display for ListValue<T> {
 
 macro_rules! string_enum {
     ($name:ident { $($variant:ident => $value:literal),+ $(,)? }) => {
+        #[doc = concat!("Строго типизированное input-перечисление Shikimori REST API `", stringify!($name), "`.")]
         #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-        pub enum $name { $($variant),+ }
+        pub enum $name {
+            $(
+                #[doc = concat!("Wire value `", $value, "`, поддерживаемое Shikimori REST API.")]
+                $variant,
+            )+
+        }
         impl ::std::fmt::Display for $name { fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result { f.write_str(match self { $(Self::$variant => $value),+ }) } }
         impl ::serde::Serialize for $name { fn serialize<S>(&self, serializer: S) -> ::std::result::Result<S::Ok, S::Error> where S: ::serde::Serializer { serializer.serialize_str(&self.to_string()) } }
     };
@@ -563,296 +603,443 @@ string_enum!(PrivateMessageKind { Private=>"Private" });
 string_enum!(BulkMessageKind { News=>"news", Notifications=>"notifications" });
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct AppearRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub ids: Option<String>,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct UpdateClubRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub club: ClubInput,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct ClubInput {
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub display_images: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub comment_policy: Option<ClubCommentPolicy>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub topic_policy: Option<ClubTopicPolicy>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub image_upload_policy: Option<ClubImageUploadPolicy>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct CreateCommentRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub comment: NewComment,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub frontend: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub broadcast: Option<bool>,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct NewComment {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub body: String,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub commentable_id: u64,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub commentable_type: CommentableType,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub is_offtopic: Option<bool>,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct UpdateCommentRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub comment: CommentPatch,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub frontend: Option<bool>,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct CommentPatch {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub body: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct CreateTopicRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub topic: NewTopic,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct NewTopic {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub body: String,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub forum_id: u64,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub linked_id: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub linked_type: Option<TopicLinkedType>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub title: String,
     #[serde(rename = "type")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub topic_type: TopicRootType,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub user_id: u64,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct UpdateTopicRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub topic: TopicPatch,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct TopicPatch {
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub body: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub linked_id: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub linked_type: Option<TopicLinkedType>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub title: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct CreateReviewRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub review: NewReview,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub frontend: Option<bool>,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct NewReview {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub anime_id: u64,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub body: String,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub opinion: ReviewOpinion,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct UpdateReviewRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub review: ReviewPatch,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub frontend: Option<bool>,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct ReviewPatch {
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub body: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub opinion: Option<ReviewOpinion>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct CreateMessageRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub message: NewMessage,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub frontend: Option<bool>,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct NewMessage {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub body: String,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub from_id: u64,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub kind: PrivateMessageKind,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub to_id: u64,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct UpdateMessageRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub message: MessagePatch,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub frontend: Option<bool>,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct MessagePatch {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub body: String,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct MarkMessagesReadRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub ids: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub is_read: Option<bool>,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct MessageBulkRequest {
     #[serde(rename = "type")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub message_type: BulkMessageKind,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub frontend: Option<bool>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct FavouriteTarget {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub linked_type: FavouriteType,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub linked_id: u64,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub kind: Option<PersonFavouriteKind>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct CreateUserRateRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub user_rate: NewUserRate,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct NewUserRate {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub user_id: u64,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub target_id: u64,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub target_type: RateTargetType,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub status: Option<UserRateStatus>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub score: Option<u8>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub chapters: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub episodes: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub volumes: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub rewatches: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub text: Option<String>,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct UpdateUserRateRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub user_rate: UserRatePatch,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct UserRatePatch {
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub status: Option<UserRateStatus>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub score: Option<u8>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub chapters: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub episodes: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub volumes: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub rewatches: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub text: Option<String>,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct CreateTopicIgnoreV1Request {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub topic_ignore: TopicIgnoreInput,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct TopicIgnoreInput {
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub topic_id: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub user_id: Option<u64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct CreateStyleRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub style: NewStyle,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct NewStyle {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub css: String,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub name: String,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub owner_id: u64,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub owner_type: StyleOwnerType,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct StylePreviewRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub style: StyleCss,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct StyleCss {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub css: String,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct UpdateStyleRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub style: StylePatch,
 }
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct StylePatch {
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub css: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub name: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct CreateVideoRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub video: NewVideo,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct NewVideo {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub kind: VideoKind,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub name: String,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub url: String,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct AbuseRequestInput {
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub comment_id: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub topic_id: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub reason: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct EpisodeNotificationRequest {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub episode_notification: NewEpisodeNotification,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub token: String,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+/// Структура данных публичного контракта Shikimori REST API.
 pub struct NewEpisodeNotification {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub anime_id: u64,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub episode: u64,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub aired_at: String,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub is_fandub: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub is_raw: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub is_subtitles: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub is_anime365: Option<bool>,
 }
 
 /// Metadata and bytes to upload with `POST /api/user_images`.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UserImageUpload {
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub filename: String,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub bytes: Vec<u8>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub linked_type: Option<String>,
+    /// Поле, передаваемое или возвращаемое в contract Shikimori REST API.
     pub content_type: Option<String>,
 }
 

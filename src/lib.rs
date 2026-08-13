@@ -1,32 +1,15 @@
-//! Типобезопасный асинхронный клиент официального Shikimori REST API v1/v2.
-//!
-//! Crate намеренно не реализует GraphQL и OAuth authorization/refresh flows. Для
-//! защищённых REST-операций передайте уже полученный access token в
-//! [`ClientConfig::access_token`].
-//!
-//! ## Быстрый старт
-//!
-//! ```no_run
-//! use shikimori_api::{ClientConfig, ShikimoriClient};
-//!
-//! # async fn example() -> Result<(), shikimori_api::Error> {
-//! let client = ShikimoriClient::new(ClientConfig::builder("my-shikimori-app/0.1").build()?);
-//! let animes = client.list_animes(Default::default()).await?;
-//! println!("received {} anime records", animes.len());
-//! # Ok(())
-//! # }
-//! ```
-//!
-//! The official REST documentation imposes both 5 requests/second and 90
-//! requests/minute. The default client limiter enforces both quotas before a
-//! request is sent. See <https://shikimori.io/api/doc/1.0>.
-
+#![doc = include_str!("docs/crate-overview.md")]
 #![forbid(unsafe_code)]
+#![warn(missing_docs)]
+#![warn(rustdoc::broken_intra_doc_links)]
+#![warn(rustdoc::private_intra_doc_links)]
 
 mod client;
 mod encoding;
 mod error;
+/// Типизированные query, request body и input-enum Shikimori REST API.
 mod params;
+/// Типизированные response-модели и общие ресурсы Shikimori REST API.
 pub mod types;
 
 pub use client::{ClientConfig, ClientConfigBuilder, ShikimoriClient};
