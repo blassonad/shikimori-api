@@ -18,16 +18,16 @@ GitHub Actions в `.github/workflows/` разделены на два незав
 
 ## Publish workflow
 
-`publish.yml` запускается на `push` в `main` и через `workflow_dispatch`. У него есть GitHub Environment `crates-io`; maintainer должен создать это Environment до первого release и сохранить в нём secret `CARGO_REGISTRY_TOKEN`. Environment рекомендуется защитить required reviewer-ом, чтобы deployment ожидал явного одобрения.
+`publish.yml` запускается на `push` в `main` и через `workflow_dispatch`. У него есть GitHub Environment `crates-io`; maintainer должен создать это Environment до первого release и сохранить в нём secret `CARGO_REGISTRY_TOKEN`, а также Environment variable `CRATES_IO_PUBLISH_ENABLED=true`. Environment рекомендуется защитить required reviewer-ом, чтобы deployment ожидал явного одобрения.
 
 | Guard | Поведение |
 | --- | --- |
 | Repository guard | Publish не выполняется для fork repository. |
 | Branch guard | Автоматический trigger реагирует только на `main`. |
-| Environment | Job ожидает правила GitHub Environment `crates-io`; secret не доступен ни обычному CI, ни pull request workflow. |
+| Environment | Job ожидает правила GitHub Environment `crates-io`; секрет и enable-variable не доступны ни обычному CI, ни pull request workflow. |
 | Package check | Сначала запускается `cargo publish --dry-run --locked`. |
 | Version check | Workflow спрашивает crates.io API: если `Cargo.toml` version уже существует, upload пропускается успешно. |
-| Explicit token | Реальная публикация использует только `secrets.CARGO_REGISTRY_TOKEN`; token не печатается в logs. |
+| Explicit enable + token | Реальная публикация требует и `vars.CRATES_IO_PUBLISH_ENABLED=true`, и `secrets.CARGO_REGISTRY_TOKEN`; token не печатается в logs. |
 | Minimal permissions | Workflow имеет `contents: read`; GitHub token не используется для публикации. |
 
 ## Однократная настройка maintainer-а
@@ -35,8 +35,9 @@ GitHub Actions в `.github/workflows/` разделены на два незав
 1. Создайте аккаунт crates.io и подтвердите email.
 2. Убедитесь, что package name `shikimori-api` свободен или уже принадлежит maintainer-у.
 3. Создайте restricted crates.io API token с правом publish/update и храните его только как Environment secret `CARGO_REGISTRY_TOKEN` в GitHub Environment `crates-io`.
-4. Создайте GitHub Environment `crates-io`; включите required reviewers и ограничьте deployment branch `main`.
-5. Выполните controlled первый release, изменив `version` в `Cargo.toml` и отправив commit в `main`.
+4. В том же Environment создайте variable `CRATES_IO_PUBLISH_ENABLED` со значением `true`; без неё workflow всегда safely skips upload.
+5. Включите required reviewers и ограничьте deployment branch `main`.
+6. Выполните controlled первый release, изменив `version` в `Cargo.toml` и отправив commit в `main`.
 
 После первого release можно заменить token-based публикацию на crates.io Trusted Publishing, если crate ownership и repository association настроены в crates.io. Trusted Publishing использует short-lived GitHub OIDC identity вместо долгоживущего secret. [2]
 

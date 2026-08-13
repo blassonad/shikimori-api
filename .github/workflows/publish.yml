@@ -62,12 +62,13 @@ jobs:
         id: registry
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          CRATES_IO_PUBLISH_ENABLED: ${{ vars.CRATES_IO_PUBLISH_ENABLED }}
         run: |
-          if [ -n "$CARGO_REGISTRY_TOKEN" ]; then
+          if [ -n "$CARGO_REGISTRY_TOKEN" ] && [ "$CRATES_IO_PUBLISH_ENABLED" = "true" ]; then
             echo "configured=true" >> "$GITHUB_OUTPUT"
           else
             echo "configured=false" >> "$GITHUB_OUTPUT"
-            echo "CARGO_REGISTRY_TOKEN is not configured in the crates-io Environment; publication is skipped."
+            echo "Publication is skipped until the crates-io Environment has CARGO_REGISTRY_TOKEN and CRATES_IO_PUBLISH_ENABLED=true."
           fi
 
       - name: Verify release candidate
@@ -91,7 +92,7 @@ jobs:
 
       - name: Explain configuration skip
         if: steps.registry.outputs.configured != 'true'
-        run: echo "Configure the CARGO_REGISTRY_TOKEN secret in the crates-io GitHub Environment to enable automatic publishing."
+        run: echo "Configure CARGO_REGISTRY_TOKEN and CRATES_IO_PUBLISH_ENABLED=true in the crates-io GitHub Environment to enable automatic publishing."
 
   no-release-needed:
     name: Existing version; no release needed

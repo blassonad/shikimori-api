@@ -60,7 +60,7 @@ Tests должны быть deterministic. Не добавляйте live integr
 
 ## GitHub Actions и release safety
 
-Workflows должны иметь least-privilege `permissions`. CI никогда не получает `CARGO_REGISTRY_TOKEN`. Publish workflow работает только на `main`, только в GitHub Environment `crates-io`, выполняет `cargo publish --dry-run` перед upload и пропускает существующий version. Не меняйте эти guards и не добавляйте `cargo publish` в pull-request workflow.
+Workflows должны иметь least-privilege `permissions`. CI никогда не получает `CARGO_REGISTRY_TOKEN`. Publish workflow работает только на `main`, только в GitHub Environment `crates-io`, требует одновременно `CARGO_REGISTRY_TOKEN` и `CRATES_IO_PUBLISH_ENABLED=true`, выполняет `cargo publish --dry-run` перед upload и пропускает существующий version. Не обходите эти guards и не добавляйте `cargo publish` в pull-request workflow.
 
 Публикация crates.io необратима. Workflow может публиковать только version, сознательно изменённый maintainer-ом в `Cargo.toml`; не увеличивайте version автоматически и не force-push release history.
 
