@@ -16,7 +16,7 @@ governor = "0.6"
 hyper = { version = "0.14", features = ["client", "http1", "http2", "tcp", "stream"] }
 hyper-rustls = { version = "0.24", default-features = false, features = ["http1", "http2", "tls12", "tokio-runtime", "webpki-roots"] }
 serde = { version = "1", features = ["derive"] }
-simd-json = { version = "0.14", features = ["serde_impl"] }
+simd-json = { version = "0.17", features = ["serde_impl"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync", "time"] }
 
 [dev-dependencies]
