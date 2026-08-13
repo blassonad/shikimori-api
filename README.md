@@ -158,6 +158,17 @@ match client.anime(1).await {
 
 GraphQL и получение, refresh либо revoke OAuth token не реализуются. Deprecated v1 endpoints остаются в crate для полного REST coverage; там, где есть официальный replacement, метод помечен `#[deprecated]`. V2 user-rate methods следует предпочитать legacy v1 CRUD.
 
+## Сообщество, безопасность и релизы
+
+| Документ | Назначение |
+| --- | --- |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Локальный Rust workflow, требования к public API и pull request checklist. |
+| [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | Стандарты respectful collaboration и confidential enforcement process. |
+| [SECURITY.md](SECURITY.md) | Private disclosure, supported versions и безопасная обработка уязвимостей. |
+| [SUPPORT.md](SUPPORT.md) | Каналы usage questions, bugs, upstream API issues и security reports. |
+| [AGENTS.md](AGENTS.md) | Обязательные правила для AI agents и автоматизированных изменений. |
+| [Release automation](docs/release-automation.md) | CI, protected `crates-io` Environment и guarded publish workflow. |
+
 ## Разработка
 
 ```bash

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Support and usage questions
+    url: https://github.com/blassonad/shikimori-api/discussions
+    about: Use Discussions for usage questions when the feature is enabled; otherwise open a question issue.
+  - name: Security vulnerability report
+    url: https://github.com/blassonad/shikimori-api/security/advisories/new
+    about: Report vulnerabilities privately. Do not open a public issue.
+  - name: Support policy
+    url: https://github.com/blassonad/shikimori-api/blob/feat/complete-rest-client/SUPPORT.md
+    about: Read the support channels and project boundaries before filing an issue.

@@ -1,0 +1,53 @@
+name: Bug report
+description: Report reproducible incorrect behavior in shikimori-api.
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a defect. Do not include Shikimori access tokens, crates.io tokens, GitHub tokens, or personal data. For security-sensitive reports, use the private Security Advisory link instead.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the actual behavior and the expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide the smallest Rust code, request shape, or fixture that reproduces the problem. Redact credentials.
+      render: rust
+    validations:
+      required: true
+  - type: input
+    id: crate-version
+    attributes:
+      label: shikimori-api version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: rust-version
+    attributes:
+      label: Rust version
+      placeholder: "rustc 1.75.0"
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Operating system and target
+      placeholder: "Ubuntu 24.04, x86_64-unknown-linux-gnu"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or response body
+      description: Redact tokens, authorization headers, URLs containing secrets and personal data.
+      render: text
+    validations:
+      required: false

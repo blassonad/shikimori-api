@@ -1,0 +1,48 @@
+name: REST API enhancement
+description: Propose a documented Shikimori REST capability or ergonomic improvement.
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This crate intentionally excludes GraphQL and OAuth issuance/refresh. Requests must be grounded in the official Shikimori REST documentation.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: Explain the practical problem this change solves.
+    validations:
+      required: true
+  - type: input
+    id: official-docs
+    attributes:
+      label: Official Shikimori REST documentation URL
+      description: Link the exact v1/v2 route or schema page.
+      placeholder: "https://shikimori.io/api/doc/..."
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-api
+    attributes:
+      label: Proposed Rust API
+      description: Sketch method name, typed inputs, typed response and any error/compatibility behavior.
+      render: rust
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Explain existing route/workaround or why it is inadequate.
+    validations:
+      required: false
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: This is not a request for GraphQL or OAuth authorization/refresh flow.
+          required: true
+        - label: I checked existing issues, Rustdoc and the endpoint matrix.
+          required: true
