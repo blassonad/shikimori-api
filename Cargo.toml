@@ -1,0 +1,27 @@
+[package]
+name = "shikimori-api"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+description = "Полный асинхронный Rust-клиент Shikimori REST API v1/v2 (без GraphQL и OAuth flow)"
+license = "MIT"
+repository = "https://github.com/blassonad/shikimori-api"
+keywords = ["shikimori", "anime", "manga", "api", "client"]
+categories = ["api-bindings", "asynchronous"]
+readme = "README.md"
+
+[dependencies]
+governor = "0.6"
+hyper = { version = "0.14", features = ["client", "http1", "http2", "tcp", "stream"] }
+hyper-rustls = { version = "0.24", default-features = false, features = ["http1", "http2", "tls12", "tokio-runtime", "webpki-roots"] }
+serde = { version = "1", features = ["derive"] }
+simd-json = { version = "0.14", features = ["serde_impl"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync", "time"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
+
+[features]
+default = []
+# Включает opt-in smoke-тесты, выполняющие только публичные GET запросы.
+live-tests = []
