@@ -12,7 +12,7 @@ categories = ["api-bindings", "asynchronous"]
 readme = "README.md"
 
 [dependencies]
-governor = "0.6"
+governor = "0.10"
 hyper = { version = "0.14", features = ["client", "http1", "http2", "tcp", "stream"] }
 hyper-rustls = { version = "0.24", default-features = false, features = ["http1", "http2", "tls12", "tokio-runtime", "webpki-roots"] }
 serde = { version = "1", features = ["derive"] }
